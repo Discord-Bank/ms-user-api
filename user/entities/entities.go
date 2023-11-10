@@ -2,9 +2,13 @@ package entities
 
 import "time"
 
-type Store interface {}
+type Store interface {
+	Get(userId string) (user *User, err error)
+}
 
-type Service interface {}
+type Service interface {
+	Get(userId string) (user *User, err error)
+}
 
 type User struct {
 	UserId string `json:"userId"`
