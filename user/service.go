@@ -11,5 +11,5 @@ func NewUserService(repo entities.Store) entities.Service {
 }
 
 func (us *UserService) Get(userId string) (user *entities.User, err error) {
-	return nil, nil
+	return us.repo.Get(userId)
 }
