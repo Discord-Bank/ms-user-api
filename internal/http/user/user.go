@@ -1,6 +1,8 @@
 package user
 
 import (
+	"errors"
+	"ms-user-api/exceptions"
 	"ms-user-api/user/entities"
 	"net/http"
 
@@ -20,5 +22,34 @@ func NewUserHandler(s entities.Service) Handler {
 } 
 
 func (uh *UserHandler) Get(c echo.Context) (error) {
-	return c.JSON(http.StatusOK, map[string]string{"message":"first message"})
+	userId := c.Param("userId")
+	
+	user, err := uh.s.Get(userId)
+	if err != nil {
+		var appErrors *exceptions.Error
+		if errors.As(err, &appErrors){
+			return uh.returnError(c, appErrors)
+		}
+	}
+
+	return c.JSON(http.StatusOK, user)
+}
+
+func (h *UserHandler) printErrorMessage(c echo.Context, statusCode int, message string) error {
+	return c.JSON(statusCode, map[string]string{
+		"message": message,
+	})
+}
+
+func (h *UserHandler) returnError(c echo.Context, err *exceptions.Error) error {
+	switch err.Code {
+	case exceptions.NotFound:
+		return h.printErrorMessage(c, http.StatusNotFound, err.Message)
+	case exceptions.BadData:
+		return h.printErrorMessage(c, http.StatusUnprocessableEntity, err.Message)
+	case exceptions.BadRequest:
+		return h.printErrorMessage(c, http.StatusBadRequest, err.Message)
+	}
+
+	return h.printErrorMessage(c, http.StatusInternalServerError, err.Message)
 }
