@@ -32,12 +32,12 @@ func (uh *UserHandler) Get(c echo.Context) (error) {
 		}
 	}
 
-	return c.JSON(http.StatusCreated, user)
+	return c.JSON(http.StatusOK, user)
 }
 
 func (h *UserHandler) printErrorMessage(c echo.Context, statusCode int, message string) error {
 	return c.JSON(statusCode, map[string]string{
-		"msg": message,
+		"message": message,
 	})
 }
 
