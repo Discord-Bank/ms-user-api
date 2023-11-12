@@ -11,6 +11,9 @@ import (
 
 type Handler interface {
 	Get(c echo.Context) (error)
+	Post(c echo.Context) (error)
+	Patch(c echo.Context) (error)
+	Delete(c echo.Context) (error)
 }
 
 type UserHandler struct {
@@ -20,6 +23,10 @@ type UserHandler struct {
 func NewUserHandler(s entities.Service) Handler {
 	return &UserHandler{s: s}
 } 
+
+func (uh *UserHandler) Post(c echo.Context) (error) {
+	return c.JSON(http.StatusCreated, map[string]string{"message": "created"})
+}
 
 func (uh *UserHandler) Get(c echo.Context) (error) {
 	userId := c.Param("userId")
@@ -33,6 +40,14 @@ func (uh *UserHandler) Get(c echo.Context) (error) {
 	}
 
 	return c.JSON(http.StatusOK, user)
+}
+
+func (uh *UserHandler) Patch(c echo.Context) (error) {
+	return c.JSON(http.StatusNoContent, "")
+}
+
+func (uh *UserHandler) Delete(c echo.Context) (error) {
+	return c.JSON(http.StatusOK, map[string]string{"message": "deleted"})
 }
 
 func (h *UserHandler) printErrorMessage(c echo.Context, statusCode int, message string) error {
