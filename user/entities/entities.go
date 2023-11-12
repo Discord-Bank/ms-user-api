@@ -4,6 +4,7 @@ import "time"
 
 type Storage interface {
 	Get(userId string) (user *User, err error)
+	AutoMigrateSetup()
 }
 
 type Store interface {
