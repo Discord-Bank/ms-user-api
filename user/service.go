@@ -10,6 +10,6 @@ func NewUserService(repo entities.Store) entities.Service {
 	return &UserService{repo: repo}
 }
 
-func (us *UserService) Get(userId string) (user *entities.User, err error) {
-	return nil, nil
+func (us *UserService) Get(userId string) (*entities.User, error) {
+	return us.repo.Get(userId)
 }
