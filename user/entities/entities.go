@@ -2,6 +2,10 @@ package entities
 
 import "time"
 
+type Storage interface {
+	Get(userId string) (user *User, err error)
+}
+
 type Store interface {
 	Get(userId string) (user *User, err error)
 }
