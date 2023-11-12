@@ -1,13 +1,22 @@
 package user
 
-import "ms-user-api/user/entities"
+import (
+	"ms-user-api/exceptions"
+	"ms-user-api/user/entities"
+)
 
-type UserRepository struct {}
+type UserRepository struct {
+	orm entities.Storage
+}
 
-func NewUserRepository() entities.Store {
+func NewUserRepository(orm entities.Storage) entities.Store {
 	return &UserRepository{}
 }
 
 func (us *UserRepository) Get(userId string) (user *entities.User, err error) {
-	return nil, nil
+	user, err = us.orm.Get(userId)
+	if err != nil {
+		return nil, exceptions.New(exceptions.NotFound, "user with id " + userId + " not found")
+	}
+	return user, nil
 }
