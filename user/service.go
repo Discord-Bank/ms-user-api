@@ -44,7 +44,6 @@ func (us *UserService) toUser(req *entities.UserRequest) (user *entities.User, e
 		UserId: req.UserId,
 		Saldo: 0,
 		CreatedAt: &createdAt,
-		IsActive: true,
 	}
 
 	return user, err

@@ -29,7 +29,12 @@ type User struct {
 	UserId string `json:"userId"`
 	Saldo float64 `json:"saldo"`
 	CreatedAt *time.Time `json:"createdAt"`
-	IsActive bool `json:"isActive"`
+}
+
+type UserResponse struct {
+	UserId string `json:"userId"`
+	Saldo float64 `json:"saldo"`
+	CreatedAt *time.Time `json:"createdAt"`
 }
 
 type UserRequest struct {
