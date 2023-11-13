@@ -15,6 +15,7 @@ type Storage interface {
 type Store interface {
 	Get(userId string) (user *User, err error)
 	Post(req *User) (user *User, err error)
+	Patch(saldo float64, userId string) (user *User, err error)
 }
 
 type Service interface {
