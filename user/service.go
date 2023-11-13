@@ -31,7 +31,7 @@ func (us *UserService) Patch(req *entities.UserPatchRequest, userId string) (err
 	if req.Saldo == nil {
 		return exceptions.New(exceptions.BadRequest, "the field saldo is required")
 	}
-	return us.repo.Patch(*req.Saldo, userId)
+	return us.repo.Patch(&entities.User{UserId: userId, Saldo: *req.Saldo})
 }
 
 func (us *UserService) toUser(req *entities.UserRequest) (user *entities.User, err error) {

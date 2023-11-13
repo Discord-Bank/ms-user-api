@@ -29,6 +29,6 @@ func (us *UserRepository) Post(req *entities.User) (user *entities.User, err err
 	return user, err
 }
 
-func (us *UserRepository) Patch(saldo float64, userId string) (err error) {
-	return nil
+func (us *UserRepository) Patch(req *entities.User) (err error) {
+	return us.orm.Patch(req)
 }

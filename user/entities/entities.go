@@ -16,7 +16,7 @@ type Storage interface {
 type Store interface {
 	Get(userId string) (user *User, err error)
 	Post(req *User) (user *User, err error)
-	Patch(saldo float64, userId string) (err error)
+	Patch(req *User) (err error)
 }
 
 type Service interface {
@@ -35,7 +35,6 @@ type User struct {
 type UserRequest struct {
 	UserId string `json:"userId" validate:"required,min=3"`
 }
-
 
 func (u *UserRequest) Validate() error {
 	validate := validator.New()
