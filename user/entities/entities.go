@@ -31,12 +31,6 @@ type User struct {
 	CreatedAt *time.Time `json:"createdAt"`
 }
 
-type UserResponse struct {
-	UserId string `json:"userId"`
-	Saldo float64 `json:"saldo"`
-	CreatedAt *time.Time `json:"createdAt"`
-}
-
 type UserRequest struct {
 	UserId string `json:"userId" validate:"required,min=3"`
 }
