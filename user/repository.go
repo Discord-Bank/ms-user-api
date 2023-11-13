@@ -10,7 +10,7 @@ type UserRepository struct {
 }
 
 func NewUserRepository(orm entities.Storage) entities.Store {
-	return &UserRepository{}
+	return &UserRepository{orm: orm}
 }
 
 func (us *UserRepository) Get(userId string) (user *entities.User, err error) {
@@ -29,6 +29,6 @@ func (us *UserRepository) Post(req *entities.User) (user *entities.User, err err
 	return user, err
 }
 
-func (us *UserRepository) Patch(saldo float64, userId string) (user *entities.User, err error) {
-	return nil, nil
+func (us *UserRepository) Patch(req *entities.User) (err error) {
+	return us.orm.Patch(req)
 }
