@@ -18,7 +18,7 @@ func (us *UserService) Get(userId string) (*entities.User, error) {
 	return us.repo.Get(userId)
 }
 
-func (us *UserService) Post(req *entities.UserRequest) (user *entities.User, err error) {
+func (us *UserService) Post(req *entities.UserRequest) (*entities.User, error) {
 	res, err := us.toUser(req)
 	if err != nil {
 		return nil, err
@@ -27,8 +27,11 @@ func (us *UserService) Post(req *entities.UserRequest) (user *entities.User, err
 	return us.repo.Post(res)
 }
 
-func (us *UserService) Patch(req *entities.UserPatchRequest, userId string) (user *entities.User, err error) {
-	return nil, nil
+func (us *UserService) Patch(req *entities.UserPatchRequest, userId string) (*entities.User, error) {
+	if req.Saldo == nil {
+		return nil, exceptions.New(exceptions.BadRequest, "the field saldo is required")
+	}
+	return us.repo.Patch(*req.Saldo, userId)
 }
 
 func (us *UserService) toUser(req *entities.UserRequest) (user *entities.User, err error) {

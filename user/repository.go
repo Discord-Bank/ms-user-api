@@ -29,6 +29,6 @@ func (us *UserRepository) Post(req *entities.User) (user *entities.User, err err
 	return user, err
 }
 
-func (us *UserRepository) Patch(attr map[string]interface{}, userId string) (user *entities.User, err error) {
+func (us *UserRepository) Patch(saldo float64, userId string) (user *entities.User, err error) {
 	return nil, nil
 }
