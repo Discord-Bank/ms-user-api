@@ -13,7 +13,7 @@ type Database struct {
 }
 
 func NewDatabase() (entities.Storage, error) {
-	db, err := gorm.Open(postgres.Open("user=postgres password=admin dbname=botbank port=5432 sslmode=disable"))
+	db, err := gorm.Open(postgres.Open("host=localhost user=postgres password=admin port=5432 sslmode=disable"), &gorm.Config{})
 	return &Database{db: db}, err
 }
 
