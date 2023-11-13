@@ -27,9 +27,9 @@ func (us *UserService) Post(req *entities.UserRequest) (*entities.User, error) {
 	return us.repo.Post(res)
 }
 
-func (us *UserService) Patch(req *entities.UserPatchRequest, userId string) (*entities.User, error) {
+func (us *UserService) Patch(req *entities.UserPatchRequest, userId string) (error) {
 	if req.Saldo == nil {
-		return nil, exceptions.New(exceptions.BadRequest, "the field saldo is required")
+		return exceptions.New(exceptions.BadRequest, "the field saldo is required")
 	}
 	return us.repo.Patch(*req.Saldo, userId)
 }

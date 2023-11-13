@@ -67,7 +67,7 @@ func (uh *UserHandler) Patch(c echo.Context) (error) {
 	if err := c.Bind(&req); err != nil {
 		return uh.returnError(c, exceptions.New(exceptions.BadData, "unprocessable json"))
 	}
-	res, err := uh.s.Patch(req, userId)
+	err := uh.s.Patch(req, userId)
 	if err != nil {
 		var appErrors *exceptions.Error
 		if errors.As(err, &appErrors) {
@@ -75,7 +75,7 @@ func (uh *UserHandler) Patch(c echo.Context) (error) {
 		}
 	}
 
-	return c.JSON(http.StatusOK, res)
+	return c.JSON(http.StatusNoContent, "")
 }
 
 func (uh *UserHandler) Delete(c echo.Context) (error) {

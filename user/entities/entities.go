@@ -9,19 +9,20 @@ import (
 type Storage interface {
 	Get(userId string) (user *User, err error)
 	Post(req *User) (*User, error)
+	Patch(req *User) (err error)
 	AutoMigrateSetup()
 }
 
 type Store interface {
 	Get(userId string) (user *User, err error)
 	Post(req *User) (user *User, err error)
-	Patch(saldo float64, userId string) (user *User, err error)
+	Patch(saldo float64, userId string) (err error)
 }
 
 type Service interface {
 	Get(userId string) (user *User, err error)
 	Post(req *UserRequest) (user *User, err error)
-	Patch(req *UserPatchRequest, userId string) (user *User, err error)
+	Patch(req *UserPatchRequest, userId string) (err error)
 }
 
 type User struct {

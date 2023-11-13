@@ -33,6 +33,13 @@ func (orm *Database) Post(req *entities.User) (user *entities.User, err error) {
 	return user, nil
 }
 
+func (orm *Database) Patch(req *entities.User) (error) {
+	if err := orm.db.Save(&req).Error; err != nil {
+		return exceptions.New(exceptions.NotFound, "user with id " + req.UserId + " not found")
+	}
+	return nil
+}
+
 func (orm *Database) AutoMigrateSetup() {
 	orm.db.AutoMigrate(&entities.User{})
 }
