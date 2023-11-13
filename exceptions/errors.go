@@ -24,6 +24,15 @@ func New(code Code, message string) *Error {
 		Message: message,
 	}
 }
+
+func Wrap(code Code, message string, err error) *Error {
+	return &Error{
+		Code:    code,
+		Message: message,
+		Err: err,
+	}
+}
+
 func (e *Error) Error() string {
-	return e.Message
+	return e.Message + e.Err.Error()
 }

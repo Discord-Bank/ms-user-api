@@ -1,6 +1,10 @@
 package entities
 
-import "time"
+import (
+	"time"
+
+	"github.com/go-playground/validator/v10"
+)
 
 type Storage interface {
 	Get(userId string) (user *User, err error)
@@ -9,6 +13,7 @@ type Storage interface {
 
 type Store interface {
 	Get(userId string) (user *User, err error)
+	Post(req *User) (user *User, err error)
 }
 
 type Service interface {
@@ -24,7 +29,13 @@ type User struct {
 }
 
 type UserRequest struct {
-	UserId string `json:"userId"`
+	UserId string `json:"userId" validate:"required,min=3"`
+}
+
+
+func (u *UserRequest) Validate() error {
+	validate := validator.New()
+	return validate.Struct(u)
 }
 
 type UserPatchRequest struct {
