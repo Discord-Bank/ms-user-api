@@ -20,6 +20,7 @@ type Store interface {
 type Service interface {
 	Get(userId string) (user *User, err error)
 	Post(req *UserRequest) (user *User, err error)
+	Patch(req *UserPatchRequest, userId string) (user *User, err error)
 }
 
 type User struct {
@@ -40,5 +41,5 @@ func (u *UserRequest) Validate() error {
 }
 
 type UserPatchRequest struct {
-	IsActive *bool `json:"isActive"`
+	Saldo *float64 `json:"saldo"`
 }
