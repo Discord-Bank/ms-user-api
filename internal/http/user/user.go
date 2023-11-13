@@ -25,7 +25,20 @@ func NewUserHandler(s entities.Service) Handler {
 } 
 
 func (uh *UserHandler) Post(c echo.Context) (error) {
-	return c.JSON(http.StatusCreated, map[string]string{"message": "created"})
+	var req *entities.UserRequest
+	if err := c.Bind(&req); err != nil {
+		return uh.returnError(c, exceptions.New(exceptions.BadData, "unprocessable json"))
+	}
+
+	res, err := uh.s.Post(req)
+	if err != nil {
+		var appErrors *exceptions.Error
+		if errors.As(err, &appErrors) {
+			return uh.returnError(c, appErrors)
+		}
+	}
+
+	return c.JSON(http.StatusCreated, res)
 }
 
 func (uh *UserHandler) Get(c echo.Context) (error) {
