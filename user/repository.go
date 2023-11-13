@@ -20,3 +20,7 @@ func (us *UserRepository) Get(userId string) (user *entities.User, err error) {
 	}
 	return user, nil
 }
+
+func (us *UserRepository) Post(req *entities.User) (user *entities.User, err error) {
+	return nil, nil
+}
