@@ -8,6 +8,7 @@ const (
 	InternalServerError
 	BadRequest
 	BadData
+	AlreadyExists
 )
 
 type ErrorOption func(*Error)
