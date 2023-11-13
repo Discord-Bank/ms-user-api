@@ -13,3 +13,7 @@ func NewUserService(repo entities.Store) entities.Service {
 func (us *UserService) Get(userId string) (*entities.User, error) {
 	return us.repo.Get(userId)
 }
+
+	func (us *UserService) Post(req *entities.UserRequest) (user *entities.User, err error) {
+		return nil, nil
+	}

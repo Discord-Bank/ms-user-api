@@ -32,6 +32,9 @@ func Handlers() (*echo.Echo){
 
 	v1 := e.Group("v1/users")
 	v1.GET(":userId", uh.Get)
+	v1.POST("", uh.Post)
+	v1.PATCH(":userId", uh.Patch)
+	v1.DELETE(":userId", uh.Delete)
 
 	return e
 }
