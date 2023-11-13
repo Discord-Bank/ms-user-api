@@ -27,6 +27,10 @@ func (us *UserService) Post(req *entities.UserRequest) (user *entities.User, err
 	return us.repo.Post(res)
 }
 
+func (us *UserService) Patch(req *entities.UserPatchRequest, userId string) (user *entities.User, err error) {
+	return nil, nil
+}
+
 func (us *UserService) toUser(req *entities.UserRequest) (user *entities.User, err error) {
 	if err = req.Validate(); err != nil {
 		return user, exceptions.Wrap(exceptions.BadRequest, "invalid request body, error: ", err)
