@@ -13,7 +13,6 @@ type Handler interface {
 	Get(c echo.Context) (error)
 	Post(c echo.Context) (error)
 	Patch(c echo.Context) (error)
-	Delete(c echo.Context) (error)
 }
 
 type UserHandler struct {
@@ -76,10 +75,6 @@ func (uh *UserHandler) Patch(c echo.Context) (error) {
 	}
 
 	return c.JSON(http.StatusNoContent, "")
-}
-
-func (uh *UserHandler) Delete(c echo.Context) (error) {
-	return c.JSON(http.StatusOK, map[string]string{"message": "deleted"})
 }
 
 func (h *UserHandler) printErrorMessage(c echo.Context, statusCode int, message string) error {
