@@ -8,6 +8,7 @@ import (
 
 type Storage interface {
 	Get(userId string) (user *User, err error)
+	Post(req *User) (*User, error)
 	AutoMigrateSetup()
 }
 

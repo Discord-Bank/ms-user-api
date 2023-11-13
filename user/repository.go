@@ -22,5 +22,9 @@ func (us *UserRepository) Get(userId string) (user *entities.User, err error) {
 }
 
 func (us *UserRepository) Post(req *entities.User) (user *entities.User, err error) {
-	return nil, nil
+	user, err = us.orm.Post(req)
+	if user.CreatedAt != req.CreatedAt {
+		return user, exceptions.New(exceptions.AlreadyExists, "user " + user.UserId + " already exists")
+	}
+	return user, err
 }

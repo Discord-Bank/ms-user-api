@@ -34,6 +34,12 @@ func (uh *UserHandler) Post(c echo.Context) (error) {
 	if err != nil {
 		var appErrors *exceptions.Error
 		if errors.As(err, &appErrors) {
+			if appErrors.Code == exceptions.AlreadyExists {
+				return c.JSON(http.StatusNotImplemented, map[string]interface{}{
+					"message": err.Error(),
+					"user": res,
+				})
+			}
 			return uh.returnError(c, appErrors)
 		}
 	}
