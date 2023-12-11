@@ -12,8 +12,8 @@ type Database struct {
 	db *gorm.DB
 }
 
-func NewDatabase() (entities.Storage, error) {
-	db, err := gorm.Open(postgres.Open("postgres://vircbcsz:I1GULRcINH8v9AYT7gBdJ5xKG7QBfuGU@silly.db.elephantsql.com/vircbcsz"), &gorm.Config{})
+func NewDatabase(dsn string) (entities.Storage, error) {
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	return &Database{db: db}, err
 }
 
