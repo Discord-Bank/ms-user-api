@@ -9,33 +9,48 @@ import (
 )
 
 type Database struct {
-	db *gorm.DB 
+	db *gorm.DB
 }
 
 func NewDatabase() (entities.Storage, error) {
-	db, err := gorm.Open(postgres.Open("host=localhost user=postgres password=admin port=5432 sslmode=disable"), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open("postgres://vircbcsz:I1GULRcINH8v9AYT7gBdJ5xKG7QBfuGU@silly.db.elephantsql.com/vircbcsz"), &gorm.Config{})
 	return &Database{db: db}, err
 }
 
-func (orm *Database) Get(userId string) (user *entities.User, err error) {
-	if err = orm.db.First(&user, "id = ?", userId).Error; err != nil {
-		return nil, err
+func (orm *Database) List(userIds []string, limit int, page int) ([]entities.User, error) {
+	var user = []entities.User{}
+	var err error
+	if len(userIds) < 1 {
+		if page == 0 {
+			page = 1
+		}
+		offset := (page - 1) * limit
+		err = orm.db.Offset(offset).Limit(limit).Find(&user).Error
+	} else {
+		err = orm.db.Where("id IN ?", userIds).Find(&user).Error
 	}
 
 	return user, err
 }
 
 func (orm *Database) Post(req *entities.User) (user *entities.User, err error) {
-	if err = orm.db.FirstOrCreate(&user, "id = ?", req.UserId).Error; err != nil {
-		return nil, exceptions.New(exceptions.InternalServerError, "internal server error")
+	if err := orm.db.Debug().Create(&req).Error; err != nil {
+		return user, exceptions.New(exceptions.InternalServerError, "internal server error")
 	}
 
-	return user, nil
+	return req, nil
 }
 
-func (orm *Database) Patch(req *entities.User) (error) {
+func (orm *Database) Patch(req *entities.User) error {
 	if err := orm.db.Save(&req).Error; err != nil {
-		return exceptions.New(exceptions.NotFound, "user with id " + req.UserId + " not found")
+		return exceptions.New(exceptions.NotFound, "user with id "+req.Id+" not found")
+	}
+	return nil
+}
+
+func (orm *Database) Delete(req *entities.User) error {
+	if err := orm.db.Delete(&req).Error; err != nil {
+		return exceptions.New(exceptions.NotFound, "user with id "+req.Id+" not found")
 	}
 	return nil
 }

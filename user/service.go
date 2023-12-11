@@ -14,24 +14,42 @@ func NewUserService(repo entities.Store) entities.Service {
 	return &UserService{repo: repo}
 }
 
-func (us *UserService) Get(userId string) (*entities.User, error) {
-	return us.repo.Get(userId)
+func (us *UserService) List(userIds []string, limit int, page int) ([]*entities.UserResponse, error) {
+	usr, err := us.repo.List(userIds, limit, page)
+	user := []*entities.UserResponse{}
+	for _, u := range usr {
+		user = append(user, us.toUserResponse(&u))
+	}
+	return user, err
 }
 
-func (us *UserService) Post(req *entities.UserRequest) (*entities.User, error) {
+func (us *UserService) Post(req *entities.UserRequest) (*entities.UserResponse, error) {
 	res, err := us.toUser(req)
 	if err != nil {
 		return nil, err
 	}
-
-	return us.repo.Post(res)
+	res, err = us.repo.Post(res)
+	resp := us.toUserResponse(res)
+	return resp, err
 }
 
-func (us *UserService) Patch(req *entities.UserPatchRequest, userId string) (error) {
+func (us *UserService) Patch(req *entities.UserPatchRequest, userId string) error {
 	if req.Saldo == nil {
 		return exceptions.New(exceptions.BadRequest, "the field saldo is required")
 	}
-	return us.repo.Patch(&entities.User{UserId: userId, Saldo: *req.Saldo})
+	return us.repo.Patch(&entities.User{Id: userId, Saldo: *req.Saldo})
+}
+
+func (us *UserService) Delete(userId string) error {
+	return us.repo.Delete(&entities.User{Id: userId})
+}
+
+func (us *UserService) toUserResponse(user *entities.User) *entities.UserResponse {
+	return &entities.UserResponse{
+		Id:        user.Id,
+		CreatedAt: user.CreatedAt,
+		Saldo:     user.Saldo,
+	}
 }
 
 func (us *UserService) toUser(req *entities.UserRequest) (user *entities.User, err error) {
@@ -41,9 +59,9 @@ func (us *UserService) toUser(req *entities.UserRequest) (user *entities.User, e
 
 	createdAt := time.Now()
 	user = &entities.User{
-		UserId: req.UserId,
-		Saldo: 0,
-		CreatedAt: &createdAt,
+		Id:        req.Id,
+		Saldo:     0,
+		CreatedAt: createdAt,
 	}
 
 	return user, err

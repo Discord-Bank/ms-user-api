@@ -12,12 +12,12 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func Handlers() (*echo.Echo){
+func Handlers() *echo.Echo {
 	e := echo.New()
 
 	orm, err := db.NewDatabase()
 	if err != nil {
-		log.Fatal("internal server error, fail to load database")
+		log.Fatal("internal server error, " + err.Error())
 		os.Exit(1)
 	}
 	orm.AutoMigrateSetup()
@@ -31,9 +31,10 @@ func Handlers() (*echo.Echo){
 	e.GET("/health", h.Health)
 
 	v1 := e.Group("v1/users")
-	v1.GET(":userId", uh.Get)
+	v1.GET("", uh.List)
 	v1.POST("", uh.Post)
-	v1.PATCH(":userId", uh.Patch)
+	v1.PATCH("/:userId", uh.Patch)
+	v1.DELETE("/:userId", uh.Delete)
 
 	return e
 }
